@@ -21,10 +21,16 @@
                 <ion-label position="floating">Email</ion-label>
                 <ion-input type="text" formControlName="email"></ion-input>
               </ion-item>
+              <div class="error-message">
+                {{formError.email}}
+              </div>
               <ion-item>
                 <ion-label position="floating">Password</ion-label>
                 <ion-input type="password" formControlName="password"></ion-input>
               </ion-item>
+              <div class="error-message">
+                {{formError.password}}
+              </div>
               <ion-button color="secondary" expand="block" class="ion-margin-top" [disabled]="loginForm.invalid" >Login</ion-button>
             </form>
           </ion-card-content>

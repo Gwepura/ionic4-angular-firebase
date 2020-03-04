@@ -49,6 +49,5 @@ export class LoginPage implements OnInit {
 
   onFormValueChanged(data) {
     this.formError = this.helperService.prepareValidationMessage(this.loginForm, this.validationMessage, this.formError);
-    console.log('====formError', this.formError);
   }
 }
