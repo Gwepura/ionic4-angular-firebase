@@ -1,5 +1,7 @@
+import { LOGIN } from './../constants/formValidationMessage';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { HelperService } from '../providers/helper.service';
 
 @Component({
   selector: 'app-login',
@@ -11,8 +13,13 @@ export class LoginPage implements OnInit {
   loginForm: FormGroup;
   email: FormControl;
   password: FormControl;
+  formError: any = {
+    email: '',
+    password: ''
+  };
+  validationMessage: any = LOGIN;
 
-  constructor() { }
+  constructor(private helperService: HelperService ) { }
 
   ngOnInit() {
     this.createFormControl();
@@ -41,7 +48,7 @@ export class LoginPage implements OnInit {
 
 
   onFormValueChanged(data) {
-    console.log('data', data);
-    console.log('this.loginForm', this.loginForm);
+    this.formError = this.helperService.prepareValidationMessage(this.loginForm, this.validationMessage, this.formError);
+    console.log('====formError', this.formError);
   }
 }
