@@ -1,24 +1,24 @@
-import { LOGIN } from './../constants/formValidationMessage';
-import { Component, OnInit } from '@angular/core';
+import { SIGNUP } from './../constants/formValidationMessage';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
 import { HelperService } from '../providers/helper.service';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.page.html',
-  styleUrls: ['./login.page.scss'],
+  selector: 'app-signup',
+  templateUrl: './signup.page.html',
+  styleUrls: ['./signup.page.scss'],
 })
-export class LoginPage implements OnInit {
+export class SignupPage implements OnInit {
 
-  loginForm: FormGroup;
+  signupForm: FormGroup;
   email: FormControl;
   password: FormControl;
   formError: any = {
     email: '',
     password: ''
   };
-  validationMessage: any = LOGIN
+  validationMessage: any = SIGNUP
 
   constructor(private helperService: HelperService, private router: Router) { }
 
@@ -27,8 +27,8 @@ export class LoginPage implements OnInit {
     this.createForm();
   }
 
-  goToSignupPage() {
-    this.router.navigate(['/signup']);
+  goToLoginPage() {
+    this.router.navigate(['/login']);
   }
 
   createFormControl() {
@@ -44,15 +44,15 @@ export class LoginPage implements OnInit {
   }
 
   createForm() {
-    this.loginForm = new FormGroup({
+    this.signupForm = new FormGroup({
       email: this.email,
       password: this.password
     });
-    this.loginForm.valueChanges.subscribe(data => this.onFormValueChanged(data));
+    this.signupForm.valueChanges.subscribe(data => this.onFormValueChanged(data));
   }
-
 
   onFormValueChanged(data) {
-    this.formError = this.helperService.prepareValidationMessage(this.loginForm, this.validationMessage, this.formError);
+    this.formError = this.helperService.prepareValidationMessage(this.signupForm, this.validationMessage, this.formError);
   }
+
 }
