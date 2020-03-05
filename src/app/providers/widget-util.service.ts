@@ -9,14 +9,22 @@ export class WidgetUtilService {
 
   constructor(private toastController: ToastController, private platform: Platform) { }
 
-
   async presentToast(message) {
     const toast = await this.toastController.create({
       message,
+      position: this.platform.is('desktop') ? 'top' : 'bottom',
       duration: 1500,
-      showCloseButton: true,
-      position: this.platform.is('desktop') ? 'top' : 'bottom'
+      buttons: [
+        {
+          text: 'Close',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        }
+      ]
     });
+
     toast.present();
   }
 }

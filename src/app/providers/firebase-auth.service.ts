@@ -18,4 +18,12 @@ export class FirebaseAuthService {
       throw new Error(error);
     }
   }
+
+  async logout() {
+    try {
+      await this.angularFireAuth.auth.signOut();
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
 }
