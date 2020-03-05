@@ -19,6 +19,15 @@ export class FirebaseAuthService {
     }
   }
 
+  async loginWithEmailPassword(email, password) {
+    try {
+      const result = await this.angularFireAuth.auth.signInWithEmailAndPassword(email, password);
+      return result;
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
   async logout() {
     try {
       await this.angularFireAuth.auth.signOut();
