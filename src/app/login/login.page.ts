@@ -18,7 +18,7 @@ export class LoginPage implements OnInit {
     email: '',
     password: ''
   };
-  validationMessage: any = LOGIN
+  validationMessage: any = LOGIN;
 
   constructor(private helperService: HelperService, private router: Router) { }
 

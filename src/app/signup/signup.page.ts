@@ -3,6 +3,8 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { HelperService } from '../providers/helper.service';
 import { Router } from '@angular/router';
+import { FirebaseAuthService } from '../providers/firebase-auth.service';
+import { WidgetUtilService } from '../providers/widget-util.service';
 
 @Component({
   selector: 'app-signup',
@@ -18,13 +20,31 @@ export class SignupPage implements OnInit {
     email: '',
     password: ''
   };
-  validationMessage: any = SIGNUP
+  validationMessage: any = SIGNUP;
+  showSignupSpinner: boolean = false;
 
-  constructor(private helperService: HelperService, private router: Router) { }
+  constructor(private helperService: HelperService, private router: Router, private firebaseAuthService: FirebaseAuthService,
+    private widgetUtilService: WidgetUtilService) { }
 
   ngOnInit() {
     this.createFormControl();
     this.createForm();
+  }
+
+  async signup() {
+    try {
+      this.showSignupSpinner = true;
+      const result = await this.firebaseAuthService.registerWithEmailPassword(this.email.value, this.password.value);
+      console.log('result', result);
+      this.showSignupSpinner = false;
+      this.widgetUtilService.presentToast('Signup Success! Verification Email Sent!');
+      this.signupForm.reset;
+      this.router.navigate(['folder/:id']);
+    } catch (error) {
+      console.log('Error', error);
+      this.showSignupSpinner = false;
+      this.widgetUtilService.presentToast(error.message);
+    }
   }
 
   goToLoginPage() {
