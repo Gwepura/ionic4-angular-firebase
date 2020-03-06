@@ -31,6 +31,15 @@ export class LoginPage implements OnInit {
     this.createForm();
   }
 
+  async googleLoginWeb() {
+    try {
+      await this.firebaseAuthService.googleLoginWeb();
+    } catch (error) {
+      console.log(error);
+      this.widgetUtilService.presentToast(error.message);
+    }
+  }
+
   resetForm() {
     this.loginForm.reset();
     this.formError = {
