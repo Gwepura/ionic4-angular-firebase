@@ -2,13 +2,14 @@ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { auth } from 'firebase';
 import { GooglePlus } from '@ionic-native/google-plus/ngx';
+import { HelperService } from './helper.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FirebaseAuthService {
 
-  constructor(private angularFireAuth: AngularFireAuth, private googlePlus: GooglePlus) { }
+  constructor(private angularFireAuth: AngularFireAuth, private googlePlus: GooglePlus, private helperService: HelperService) { }
 
   async registerWithEmailPassword(email, password) {
     try {
@@ -32,7 +33,12 @@ export class FirebaseAuthService {
 
   async logout() {
     try {
-      await this.angularFireAuth.auth.signOut();
+      
+      if (this.helperService.isNativePlatform()) {
+        await this.nativeGoogleLogout();
+      } else {
+        await this.angularFireAuth.auth.signOut();
+      }
     } catch (error) {
       throw new Error(error);
     }
@@ -62,6 +68,13 @@ export class FirebaseAuthService {
     } catch (error) {
       throw new Error(error);
     }
-    
+  }
+
+  async nativeGoogleLogout() {
+    try {
+      await this.googlePlus.logout();
+    } catch (error) {
+      throw new Error(error);
+    }
   }
 }
