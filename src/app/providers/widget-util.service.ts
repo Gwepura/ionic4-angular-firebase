@@ -34,6 +34,7 @@ export class WidgetUtilService {
       message: 'Please wait...',
       translucent: true,
     });
+    
     return await this.loading.present();
   }
 
