@@ -35,4 +35,8 @@ export class FirebaseAuthService {
       throw new Error(error);
     }
   }
+  
+  getAuthState() {
+    return this.angularFireAuth.authState;
+  }
 }

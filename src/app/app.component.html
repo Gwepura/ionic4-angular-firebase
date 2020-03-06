@@ -1,5 +1,5 @@
 <ion-app>
-  <ion-menu contentId="main-content" type="overlay">
+  <ion-menu contentId="main-content" type="overlay" *ngIf="isLoggedIn">
     <ion-content>
       <ion-list id="inbox-list">
         <ion-list-header>Inbox</ion-list-header>
