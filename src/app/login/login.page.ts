@@ -31,6 +31,27 @@ export class LoginPage implements OnInit {
     this.createForm();
   }
 
+  googleLogin(){
+    if (this.helperService.isNativePlatform()) {
+      this.nativeGoogleLogin();
+    } else {
+      this.googleLoginWeb();
+    }
+  }
+
+  async nativeGoogleLogin() {
+    try {
+      this.widgetUtilService.presentLoading();
+      await this.firebaseAuthService.nativeGoogleLogin();
+      this.widgetUtilService.presentToast('Login Successful');
+      this.router.navigate(['/home']);
+      this.widgetUtilService.dismissLoader();
+    } catch (error) {
+      this.widgetUtilService.presentToast('Something went wrong');
+      this.widgetUtilService.dismissLoader();
+    }
+  }
+
   async googleLoginWeb() {
     try {
       await this.firebaseAuthService.googleLoginWeb();

@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { auth } from 'firebase';
+import { GooglePlus } from '@ionic-native/google-plus/ngx';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FirebaseAuthService {
 
-  constructor(private angularFireAuth: AngularFireAuth) { }
+  constructor(private angularFireAuth: AngularFireAuth, private googlePlus: GooglePlus) { }
 
   async registerWithEmailPassword(email, password) {
     try {
@@ -47,5 +48,20 @@ export class FirebaseAuthService {
     } catch (error) {
       throw new Error(error);
     }
+  }
+
+  async nativeGoogleLogin() {
+    try {
+      const result = await this.googlePlus.login({
+        webClientID: '1081123911538-k255up1kt1dff0m7m6djie55kqqp64m1.apps.googleusercontent.com',
+        offline: true,
+        scope: 'profile email'
+      });  
+      await this.angularFireAuth.auth.signInAndRetrieveDataWithCredential(auth.GoogleAuthProvider.credential(result.idToken));
+      return result
+    } catch (error) {
+      throw new Error(error);
+    }
+    
   }
 }
