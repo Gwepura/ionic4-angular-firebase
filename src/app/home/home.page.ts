@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FirebaseAuthService } from '../providers/firebase-auth.service';
 import { WidgetUtilService } from '../providers/widget-util.service';
 import { Router } from '@angular/router';
+import { FirestoreDbService } from '../providers/firestore-db.service';
 
 @Component({
   selector: 'app-home',
@@ -11,7 +12,9 @@ import { Router } from '@angular/router';
 export class HomePage implements OnInit {
 
   constructor(private firebaseAuthService: FirebaseAuthService, private widgetUtilService: WidgetUtilService,
-    private router: Router) { }
+    private router: Router, private firestoreDbService: FirestoreDbService) { 
+      this.getProductList();
+    }
 
   async logout() {
     try {
@@ -22,6 +25,12 @@ export class HomePage implements OnInit {
       console.log('Error', error);
       this.widgetUtilService.presentToast(error.message);
     }
+  }
+
+  getProductList() {
+    this.firestoreDbService.getProductList().subscribe(result => {
+      console.log('result', result);
+    });
   }
 
   ngOnInit() {
