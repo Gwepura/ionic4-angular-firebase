@@ -48,7 +48,7 @@
               <div class="error-message">
                 {{formError.brand}}
               </div>
-              <ion-button color="secondary" expand="block" class="ion-margin-top" [disabled]="addProductForm.invalid">
+              <ion-button color="secondary" expand="block" class="ion-margin-top" [disabled]="addProductForm.invalid" (click)="addProduct()">
                 Add Product
                 <ion-spinner name="dots" *ngIf="showAddProductSpinner"></ion-spinner>
               </ion-button>

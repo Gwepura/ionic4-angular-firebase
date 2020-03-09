@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { FirebaseAuthService } from '../providers/firebase-auth.service';
 import { WidgetUtilService } from '../providers/widget-util.service';
 import { ADDPRODUCT } from '../constants/formValidationMessage';
+import { FirestoreDbService } from '../providers/firestore-db.service';
 
 @Component({
   selector: 'app-add-product',
@@ -27,11 +28,40 @@ export class AddProductPage implements OnInit {
   validationMessage: any = ADDPRODUCT;
   showAddProductSpinner: boolean = false;
 
-  constructor(private helperService: HelperService) { }
+  constructor(private helperService: HelperService, private firestoreDbService: FirestoreDbService, private widgetUtilService: WidgetUtilService) { }
 
   ngOnInit() {
     this.createFormControl();
     this.createForm();
+  }
+
+  resetForm() {
+    this.addProductForm.reset();
+    this.formError = {
+      name: '',
+      price: '',
+      brand: '',
+      size: ''
+    };
+  }
+
+  async addProduct() {
+    try {
+      this.showAddProductSpinner = true;
+      await this.firestoreDbService.insertData('product', {
+        name: this.name.value,
+        price: this.price.value,
+        size: this.price.value,
+        brand: this.brand.value
+      });
+      this.showAddProductSpinner = false;
+      this.widgetUtilService.presentToast("Product Added Successfully");
+      this.resetForm();
+    } catch (error) {
+      console.log(error);
+      this.widgetUtilService.presentToast(error.message);
+      this.showAddProductSpinner = false;
+    }
   }
 
   createFormControl() {

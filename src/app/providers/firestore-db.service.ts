@@ -10,9 +10,9 @@ export class FirestoreDbService {
 
   constructor(private db: AngularFirestore) { }
 
-  getProductList() {
-    return this.db.collection('product').valueChanges();
-    return this.db.collection('product').snapshotChanges().pipe(
+  getAllData(collectionID) {
+    // return this.db.collection('product').valueChanges();
+    return this.db.collection(collectionID).snapshotChanges().pipe(
       map(docArray => {
         return docArray.map(doc => {
           console.log('==', {
@@ -41,6 +41,15 @@ export class FirestoreDbService {
     //   })
     // );
 
+    
+  }
 
+  async insertData(collectionID, data) {
+    try {
+      const result = await this.db.collection(collectionID).add(data);
+      return result;
+    } catch (error) {
+      throw new Error(error);
+    }
   }
 }
