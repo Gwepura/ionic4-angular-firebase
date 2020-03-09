@@ -58,6 +58,10 @@ export class HomePage implements OnInit {
     this.router.navigate(['/add-product']);
   }
 
+  openProductDetailPage(id) {
+    this.router.navigate(['/product-detail', id]);
+  }
+
   ngOnInit() {
   }
 

@@ -15,11 +15,6 @@ export class FirestoreDbService {
     return this.db.collection(collectionID).snapshotChanges().pipe(
       map(docArray => {
         return docArray.map(doc => {
-          console.log('==', {
-            id: doc.payload.doc.id,
-            ...doc.payload.doc.data()
-          });
-
           return {
             id: doc.payload.doc.id,
             ...doc.payload.doc.data()
@@ -48,6 +43,19 @@ export class FirestoreDbService {
     try {
       const result = await this.db.collection(collectionID).add(data);
       return result;
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  async getDataById(collectionID, docId) {
+    try {
+      const result = await this.db.collection(collectionID).doc(docId).ref.get();
+      if (result.exists) {
+        return result.data();
+      } else {
+        throw new Error('Data not found with given id');
+      }
     } catch (error) {
       throw new Error(error);
     }
