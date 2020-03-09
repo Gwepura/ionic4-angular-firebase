@@ -11,6 +11,9 @@ import { WidgetUtilService } from '../providers/widget-util.service';
 export class ProductDetailPage implements OnInit {
 
   productId: string = '';
+  productDetailAvailable: boolean = false;
+  productDetail: any = {};
+  productDetailList: Array<any> = [];
 
   constructor(private activatedRoute: ActivatedRoute, private firestoreDbService: FirestoreDbService, private widgetUtilService: WidgetUtilService) {
     this.activatedRoute.params.subscribe(result => {
@@ -25,11 +28,22 @@ export class ProductDetailPage implements OnInit {
 
   async getProductDetail() {
     try {
+      this.productDetailAvailable = false;
       const result = await this.firestoreDbService.getDataById('product', this.productId);
       console.log('product detail', result);
+      this.productDetail = result;
+      this.productDetailList = [];
+      for (const key in this.productDetail) {
+        this.productDetailList.push({
+          name: key,
+          value: this.productDetail[key]
+        });
+      }
+      this.productDetailAvailable = true;
     } catch (error) {
       console.log(error);
       this.widgetUtilService.presentToast(error.message);
+      this.productDetailAvailable = true;
     }
   }
 

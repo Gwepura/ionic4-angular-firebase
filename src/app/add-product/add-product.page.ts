@@ -51,7 +51,7 @@ export class AddProductPage implements OnInit {
       await this.firestoreDbService.insertData('product', {
         name: this.name.value,
         price: this.price.value,
-        size: this.price.value,
+        size: this.size.value,
         brand: this.brand.value
       });
       this.showAddProductSpinner = false;
