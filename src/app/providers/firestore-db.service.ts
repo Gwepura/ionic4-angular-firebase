@@ -12,21 +12,34 @@ export class FirestoreDbService {
 
   getProductList() {
     // return this.db.collection('product').valueChanges();
+    // return this.db.collection('product').snapshotChanges().pipe(
+    //   map(docArray => {
+    //     return docArray.map(doc => {
+    //       console.log('==', {
+    //         id: doc.payload.doc.id,
+    //         ...doc.payload.doc.data()
+    //       });
+
+    //       return {
+    //         id: doc.payload.doc.id,
+    //         ...doc.payload.doc.data()
+    //       }
+    //     })
+    //   })
+    // );
+
+
     return this.db.collection('product').snapshotChanges().pipe(
       map(docArray => {
         return docArray.map(doc => {
-          console.log('==', {
-            id: doc.payload.doc.id,
-            ...doc.payload.doc.data()
-          });
-          
+          const id = doc.payload.doc.id;
+          const data = doc.payload.doc.data();
 
-          return {
-            id: doc.payload.doc.id,
-            ...doc.payload.doc.data()
-          }
+          return Object.assign(id, data);
         })
       })
     );
+
+
   }
 }
