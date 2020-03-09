@@ -11,34 +11,35 @@ export class FirestoreDbService {
   constructor(private db: AngularFirestore) { }
 
   getProductList() {
-    // return this.db.collection('product').valueChanges();
-    // return this.db.collection('product').snapshotChanges().pipe(
-    //   map(docArray => {
-    //     return docArray.map(doc => {
-    //       console.log('==', {
-    //         id: doc.payload.doc.id,
-    //         ...doc.payload.doc.data()
-    //       });
-
-    //       return {
-    //         id: doc.payload.doc.id,
-    //         ...doc.payload.doc.data()
-    //       }
-    //     })
-    //   })
-    // );
-
-
+    return this.db.collection('product').valueChanges();
     return this.db.collection('product').snapshotChanges().pipe(
       map(docArray => {
         return docArray.map(doc => {
-          const id = doc.payload.doc.id;
-          const data = doc.payload.doc.data();
+          console.log('==', {
+            id: doc.payload.doc.id,
+            ...doc.payload.doc.data()
+          });
 
-          return Object.assign(id, data);
+          return {
+            id: doc.payload.doc.id,
+            ...doc.payload.doc.data()
+          }
         })
       })
     );
+
+    // Use method below if first method doesn't work
+
+    // return this.db.collection('product').snapshotChanges().pipe(
+    //   map(docArray => {
+    //     return docArray.map(doc => {
+    //       const id = doc.payload.doc.id;
+    //       const data = doc.payload.doc.data();
+
+    //       return Object.assign(id, data);
+    //     })
+    //   })
+    // );
 
 
   }

@@ -11,6 +11,9 @@ import { FirestoreDbService } from '../providers/firestore-db.service';
 })
 export class HomePage implements OnInit {
 
+  productList: Array<any> = [];
+  productAvailable: boolean = false;
+
   constructor(private firebaseAuthService: FirebaseAuthService, private widgetUtilService: WidgetUtilService,
     private router: Router, private firestoreDbService: FirestoreDbService) { 
       this.getProductList();
@@ -27,10 +30,28 @@ export class HomePage implements OnInit {
     }
   }
 
-  getProductList() {
+  getProductList(event = null) {
+    this.productAvailable = false;
     this.firestoreDbService.getProductList().subscribe(result => {
       console.log('result', result);
+      this.productList = result;
+      this.productAvailable = true;
+      this.handleRefresher(event);
+    }, (error) => {
+      this.widgetUtilService.presentToast(error.message);
+      this.productAvailable = true;
+      this.handleRefresher(event);
     });
+  }
+
+  handleRefresher(event) {
+    if (event) {
+      event.target.complete();
+    }
+  }
+
+  doRefresh(event) {
+    this.getProductList(event);
   }
 
   ngOnInit() {
