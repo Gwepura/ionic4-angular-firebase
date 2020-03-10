@@ -69,4 +69,13 @@ export class FirestoreDbService {
       throw new Error(error);
     }
   }
+
+  async deleteData(collectionID, docId) {
+    try {
+      const result = await this.db.doc(`${collectionID}/${docId}`).delete();
+      return result;
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
 }
