@@ -34,3 +34,18 @@ export const ADDPRODUCT = {
     required: 'Size is required'
   }
 }
+
+export const EDITPRODUCT = {
+  name: {
+    required: 'Name is required'
+  },
+  price: {
+    required: 'Price is required'
+  },
+  brand: {
+    required: 'Brand is required'
+  },
+  size: {
+    required: 'Size is required'
+  }
+}
