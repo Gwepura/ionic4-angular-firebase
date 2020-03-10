@@ -60,4 +60,13 @@ export class FirestoreDbService {
       throw new Error(error);
     }
   }
+
+  async updateData(collectionID, docId, updatedData) {
+    try {
+      const result = await this.db.doc(`${collectionID}/${docId}`).update(updatedData);
+      return result;
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
 }

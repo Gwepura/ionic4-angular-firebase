@@ -57,6 +57,29 @@ export class ProductDetailPage implements OnInit {
     this.createForm();
   }
 
+  async updateProduct(){
+    try {
+      this.showEditProductSpinner = true;
+      const updatedProductDetails = {};
+      for (const formField in this.editProductForm.controls) {
+        const control = this.editProductForm.controls[formField];
+        if (control.dirty) {
+          updatedProductDetails[formField] = control.value;
+        }
+      }
+      
+      await this.firestoreDbService.updateData('product', this.productId, updatedProductDetails);
+      await this.getProductDetail();
+      await this.openEditProductForm();
+      this.widgetUtilService.presentToast('Product Updated Successfully!');
+      this.showEditProductSpinner = false;
+      this.showEditProductForm = false;
+    } catch (error) {
+      this.widgetUtilService.presentToast(error.message);
+      this.showEditProductSpinner = false;
+    }
+  }
+
   async getProductDetail() {
     try {
       this.productDetailAvailable = false;
